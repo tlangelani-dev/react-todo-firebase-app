@@ -4,18 +4,24 @@ import Button from '@material-ui/core/Button';
 import { FormControl, Input, InputLabel } from '@material-ui/core';
 import Todo from './components/Todo';
 import { db } from './firebase';
+import * as firebase from 'firebase/app';
 
 const App = () => {
     const [todos, setTodos] = useState([]);
     const [input, setInput] = useState('');
+
     const addTodo = (e) => {
-        setTodos([...todos, input]);
+        e.preventDefault();
+        db.collection('todos').add({
+            todo: input,
+            created_at: firebase.firestore.FieldValue.serverTimestamp()
+        });
         setInput('');
     };
 
     // on app load, fetch todos from firebase
     useEffect(() => {
-        db.collection('todos').onSnapshot(snapshot => {
+        db.collection('todos').orderBy('created_at', 'desc').onSnapshot(snapshot => {
             setTodos(snapshot.docs.map(doc => doc.data().todo));
         });
     }, []);

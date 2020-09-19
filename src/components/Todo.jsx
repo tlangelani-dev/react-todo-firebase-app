@@ -6,7 +6,7 @@ const Todo = ({idx, todo}) => {
         <div className="todo">
             <List className="list" key={idx}>
                 <ListItem>
-                    <ListItemText primary="Todo" secondary={todo}></ListItemText>
+                    <ListItemText primary={todo} secondary="Todo"></ListItemText>
                 </ListItem>
             </List>
         </div>
