@@ -4,6 +4,20 @@
 .app input {
     width: 500px;
 }
-.todo .list {
 
+.todo-modal {
+    position: absolute;
+    width: 400px;
+    border: none;
+    padding: 30px;
+    background: white;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+.todo-modal:focus {
+    outline: none;
+}
+.todo-modal h2 {
+    margin: 0;
 }
