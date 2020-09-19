@@ -1,16 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 import Button from '@material-ui/core/Button';
 import { FormControl, Input, InputLabel } from '@material-ui/core';
 import Todo from './components/Todo';
+import { db } from './firebase';
 
 const App = () => {
-    const [todos, setTodos] = useState(['One', 'Two', 'Three']);
+    const [todos, setTodos] = useState([]);
     const [input, setInput] = useState('');
     const addTodo = (e) => {
         setTodos([...todos, input]);
         setInput('');
     };
+
+    // on app load, fetch todos from firebase
+    useEffect(() => {
+        db.collection('todos').onSnapshot(snapshot => {
+            setTodos(snapshot.docs.map(doc => doc.data().todo));
+        });
+    }, []);
 
     return (
         <div className="app">
@@ -25,11 +33,11 @@ const App = () => {
                 disabled={input === ''}
                 onClick={addTodo}
                 >
-                    Add
+                Add
             </Button>
             <ul>
                 {todos.map((todo, idx) => (
-                    <Todo idx={idx} todo={todo} />
+                    <Todo key={idx} todo={todo} />
                 ))}
             </ul>
         </div>
